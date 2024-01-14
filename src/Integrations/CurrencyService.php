@@ -3,6 +3,8 @@
 namespace App\Integrations;
 
 use App\Entity\CurrencyExchange;
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -10,6 +12,11 @@ class CurrencyService
 {
     private $httpClient;
     private $entityManager;
+    public const ALLOWED_RATES = [
+        'USD',
+        'GBP',
+        'AUD'
+    ];
 
     public function __construct(
         HttpClientInterface $httpClient,
@@ -19,17 +26,30 @@ class CurrencyService
         $this->entityManager = $entityManager;
     }
 
-    public function fetchData(): array
+    public function requestCurrencyData(): array
     {
         $response = $this->httpClient->request('GET', $_ENV['CURRENCY_API_URL']);
-        $data = $response->toArray();
+        $responseData = $response->toArray();
 
-        $currency = new CurrencyExchange();
-        $currency->setBaseCurrency($data['base']);
-        $currency->setTargetCurrency($data['rates'][0]);
-        $currency->setRate($data['rates'][1]);
-        $currency->setUpdatedAt($data['lastUpdate']);
+        foreach ($responseData['rates'] as $targetCurrency => $rate) {
+            if (in_array($targetCurrency, self::ALLOWED_RATES)) {
+                $currencyExchange = new CurrencyExchange();
 
-        return $data;
+                $currencyExchange->setBaseCurrency($responseData['base']);
+                $currencyExchange->setTargetCurrency($targetCurrency);
+                $currencyExchange->setRate($rate);
+
+                $updatedAt = new \DateTimeImmutable('@' . $responseData['lastUpdate']);
+                $updatedAt->format('Y-m-d');
+
+                $currencyExchange->setUpdatedAt($updatedAt);
+
+                $this->entityManager->persist($currencyExchange);
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return $responseData;
     }
 }

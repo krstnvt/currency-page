@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 
-class App extends React.Component {
+class Main extends React.Component {
 
     state = {
         currencies: []
@@ -25,7 +25,7 @@ class App extends React.Component {
 ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App />
+                <Main />
             </BrowserRouter>
         </React.StrictMode>,
     document.getElementById("root")

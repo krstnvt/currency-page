@@ -23,7 +23,7 @@ Encore
      * ENTRY CONFIG
      *
      * Each entry will result in one JavaScript file (e.g. app.js)
-     * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
+     * and one CSS file (e.g. main.css) if your JavaScript imports CSS.
      */
     // .addEntry('app', './assets/app.js')
 
@@ -81,7 +81,6 @@ Encore
     // optionally enable forked type script for faster builds
     // https://www.npmjs.com/package/fork-ts-checker-webpack-plugin
     // requires that you have a tsconfig.json file that is setup correctly.
-    .enableForkedTypeScriptTypesChecking()
-;
+    .enableForkedTypeScriptTypesChecking();
 
 module.exports = Encore.getWebpackConfig();
