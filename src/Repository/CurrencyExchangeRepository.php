@@ -21,27 +21,30 @@ class CurrencyExchangeRepository extends ServiceEntityRepository
         parent::__construct($registry, CurrencyExchange::class);
     }
 
-    /**
-     * @return CurrencyExchange[] Returns an array of CurrencyExchange objects
-     */
-    public function findByBaseCurrency($baseCurrency): array
+    public function findByTargetCurrency($targetCurrency): array
     {
         return $this->createQueryBuilder('currency')
-            ->andWhere('currency.base_currency = :baseCurrency')
-            ->setParameter('baseCurrency', $baseCurrency)
-            ->orderBy('c.id', 'ASC')
+            ->andWhere('currency.target_currency = :targetCurrency')
+            ->setParameter('targetCurrency', $targetCurrency)
+            ->orderBy('currency.id', 'ASC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
-//    public function findOneBySomeField($value): ?CurrencyExchange
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getAllTargetCurrencies(): array
+    {
+        return $this->createQueryBuilder('currency')
+            ->select('DISTINCT currency.target_currency')
+            ->orderBy('currency.target_currency', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAll(): array
+    {
+        return $this->createQueryBuilder('currency')
+            ->select('currency.base_currency', 'currency.target_currency', 'currency.rate', 'currency.updated_at')
+            ->getQuery()
+            ->getResult();
+    }
 }

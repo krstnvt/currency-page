@@ -2,54 +2,46 @@
 
 namespace App\Integrations;
 
-use App\Entity\CurrencyExchange;
-use DateTime;
-use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Repository\CurrencyExchangeRepository;
 
 class CurrencyService
 {
-    private $httpClient;
-    private $entityManager;
-    public const ALLOWED_RATES = [
-        'USD',
-        'GBP',
-        'AUD'
-    ];
-
+    private $currencyRepository;
     public function __construct(
-        HttpClientInterface $httpClient,
-        EntityManagerInterface $entityManager
+        CurrencyExchangeRepository $currencyRepository,
     ) {
-        $this->httpClient = $httpClient;
-        $this->entityManager = $entityManager;
+        $this->currencyRepository = $currencyRepository;
+    }
+    public function getMinRate(string $targetCurrency): float
+    {
+        $rates = $this->getRates($targetCurrency);
+
+        return min($rates);
     }
 
-    public function requestCurrencyData(): array
+    public function getMaxRate(string $targetCurrency): float
     {
-        $response = $this->httpClient->request('GET', $_ENV['CURRENCY_API_URL']);
-        $responseData = $response->toArray();
+        $rates = $this->getRates($targetCurrency);
 
-        foreach ($responseData['rates'] as $targetCurrency => $rate) {
-            if (in_array($targetCurrency, self::ALLOWED_RATES)) {
-                $currencyExchange = new CurrencyExchange();
+        return max($rates);
+    }
 
-                $currencyExchange->setBaseCurrency($responseData['base']);
-                $currencyExchange->setTargetCurrency($targetCurrency);
-                $currencyExchange->setRate($rate);
+    public function getAverageRate(string $targetCurrency): float
+    {
+        $rates = $this->getRates($targetCurrency);
 
-                $updatedAt = new \DateTimeImmutable('@' . $responseData['lastUpdate']);
-                $updatedAt->format('Y-m-d');
+        return count($rates) > 0 ? array_sum($rates) / count($rates) : 0;
+    }
 
-                $currencyExchange->setUpdatedAt($updatedAt);
+    public function getRates(string $targetCurrency): array
+    {
+        $currencies = $this->currencyRepository->findByTargetCurrency($targetCurrency);
+        return array_map(function ($currency) {
+            return $currency->getRate();
+        }, $currencies);
+    }
 
-                $this->entityManager->persist($currencyExchange);
-            }
-        }
-
-        $this->entityManager->flush();
-
-        return $responseData;
+    public function getAllCurrencies(): array {
+        return $this->currencyRepository->getAll();
     }
 }

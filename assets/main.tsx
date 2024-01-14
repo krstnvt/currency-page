@@ -1,32 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import axios from "axios";
-
-class Main extends React.Component {
-
-    state = {
-        currencies: []
-    }
-    componentDidMount() {
-        axios.get('http://localhost:8000/api/currencies').then(res => {
-            const currencies = res.data
-            this.setState({currencies})
-        })
-    }
-
-    render() {
-        return <h1> TEST </h1>
-    }
-}
-
+import {Main} from "./components/Main";
 
 
 ReactDOM.render(
-        <React.StrictMode>
-            <BrowserRouter>
-                <Main />
-            </BrowserRouter>
-        </React.StrictMode>,
+    <Main/>,
     document.getElementById("root")
 );
