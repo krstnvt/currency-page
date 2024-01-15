@@ -7,11 +7,14 @@ use App\Repository\CurrencyExchangeRepository;
 class CurrencyService
 {
     private $currencyRepository;
+
     public function __construct(
         CurrencyExchangeRepository $currencyRepository,
-    ) {
+    )
+    {
         $this->currencyRepository = $currencyRepository;
     }
+
     public function getMinRate(string $targetCurrency): float
     {
         $rates = $this->getRates($targetCurrency);
@@ -41,7 +44,8 @@ class CurrencyService
         }, $currencies);
     }
 
-    public function getAllCurrencies(): array {
-        return $this->currencyRepository->getAll();
+    public function getAllCurrencyRateData(): array
+    {
+        return $this->currencyRepository->getAllCurrencyRateData();
     }
 }

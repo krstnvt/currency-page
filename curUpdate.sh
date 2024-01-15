@@ -1,0 +1,1 @@
+echo symfony console app:request-exchange-currency-data

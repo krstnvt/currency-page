@@ -40,11 +40,20 @@ class CurrencyExchangeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getAll(): array
+    public function getAllCurrencyRateData(): array
     {
         return $this->createQueryBuilder('currency')
-            ->select('currency.base_currency', 'currency.target_currency', 'currency.rate', 'currency.updated_at')
+            ->select(
+                'currency.base_currency',
+                'currency.target_currency',
+                'currency.rate',
+                'currency.updated_at',
+                'currency.created_at',
+                'currency.id'
+            )
+            ->orderBy('currency.created_at', 'DESC')
             ->getQuery()
             ->getResult();
     }
 }
+

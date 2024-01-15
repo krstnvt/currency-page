@@ -37,10 +37,12 @@ class RequestCurrencyService
                 $currencyExchange->setTargetCurrency($targetCurrency);
                 $currencyExchange->setRate($rate);
 
-                $updatedAt = new \DateTimeImmutable('@' . $responseData['lastUpdate']);
+                $updatedAt = new \DateTime('@' . $responseData['lastUpdate']);
                 $updatedAt->format('Y-m-d');
 
                 $currencyExchange->setUpdatedAt($updatedAt);
+
+                $currencyExchange->setCreatedAt(new \DateTime(date('Y-m-d')));
 
                 $this->entityManager->persist($currencyExchange);
             }

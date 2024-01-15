@@ -24,7 +24,6 @@ export class Main extends React.Component<{}, {currencies: CurrencyExchange[]}> 
         return (
             <div>
                 <CurrencyTable currencies={this.state.currencies}/>
-
             </div>
         )
     }
