@@ -1,6 +1,9 @@
 import React from 'react';
-import { CurrencyExchange } from '../entities/CurrencyExchange';
+import {CurrencyExchange} from '../entities/CurrencyExchange';
 import moment from 'moment';
+import SelectCurrency from "./SelectCurrency";
+import CurrencyTableRows from "./CurrencyTableRows";
+import Pagination from "./Pagination";
 
 export class CurrencyTable extends React.Component<
     { currencies: CurrencyExchange[] },
@@ -17,25 +20,16 @@ export class CurrencyTable extends React.Component<
     }
 
     render() {
-        const { currencies } = this.props;
-        const { target_currency, currentPage, itemsPerPage } = this.state;
-
-        let uniqueDates = Array.from(new Set(this.props.currencies.map(currency => Object.values(currency.created_at)[0])));
-
+        const {currencies} = this.props;
+        const {target_currency, currentPage, itemsPerPage} = this.state;
+        let uniqueDates = Array.from(new Set(this.props.currencies
+            .map(currency => Object.values(currency.created_at)[0])));
         const filteredCurrencies = currencies
-            .filter((currency) => currency.target_currency === target_currency)
-            .reverse();
+            .filter((currency) => currency.target_currency === target_currency);
 
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
         const currentItems = filteredCurrencies.slice(indexOfFirstItem, indexOfLastItem);
-
-        const renderTableRows = currentItems.map((currency) => (
-            <tr key={currency.id}>
-                <td>{moment(Object.values(currency.updated_at)[0]).format('Y-MM-DD')}</td>
-                <td>{currency.rate}</td>
-            </tr>
-        ));
 
         const pageNumbers = [];
         for (let i = 1; i <= Math.ceil(filteredCurrencies.length / itemsPerPage); i++) {
@@ -44,37 +38,29 @@ export class CurrencyTable extends React.Component<
 
         return (
             <div>
-                <select
-                    className="select-container"
-                    onChange={(e) => this.setState({ target_currency: e.target.value, currentPage: 1 })}
-                >
-                    {Array.from(new Set(currencies.map((currency) => currency.target_currency))).map((uniqueCurrency) => (
-                        <option key={uniqueCurrency} value={uniqueCurrency}>
-                            EUR to {uniqueCurrency}
-                        </option>
-                    ))}
-                </select>
+                <SelectCurrency
+                    currencies={currencies}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        this.setState({target_currency: e.target.value, currentPage: 1})}
+                    selectedCurrency={this.state.target_currency}/>
 
                 <h1>1 EUR to {this.state.target_currency} Exchange Rate</h1>
-
                 <p>Last updated: {moment(Object.values(uniqueDates)[0]).format('Y-MM-DD')}</p>
 
                 <table className="table-container">
-                    <tbody>
+                    <thead>
                     <tr>
                         <th>Date</th>
                         <th>EUR to {this.state.target_currency}</th>
                     </tr>
-                    </tbody>
-                    {renderTableRows}
+                    </thead>
+                    <CurrencyTableRows currentItems={currentItems}/>
                 </table>
-                    <ul className="pagination">
-                        {pageNumbers.map((number) => (
-                            <li key={number} className={number === currentPage ? 'active' : ''}>
-                                <a onClick={() => this.setState({ currentPage: number })}>{number}</a>
-                            </li>
-                        ))}
-                    </ul>
+
+                <Pagination
+                    pageNumbers={pageNumbers}
+                    currentPage={currentPage}
+                    onClick={(number) => this.setState({currentPage: number})}/>
 
                 <p>
                     Minimum: {Math.min(...currentItems.map((currency) => currency.rate))} {this.state.target_currency},

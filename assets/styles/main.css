@@ -31,7 +31,7 @@ td {
     padding: 10px;
 }
 
-.select-container {
+.select-dropdown {
     padding: 8px;
     font-size: 14px;
     border-radius: 4px;
@@ -41,11 +41,6 @@ td {
     align-items: center;
     margin-top: 20px
 }
-
-/*.pagination-container {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*}*/
 
 .pagination {
     display: flex;

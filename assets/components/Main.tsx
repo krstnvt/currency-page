@@ -19,7 +19,6 @@ export class Main extends React.Component<{}, {currencies: CurrencyExchange[]}> 
             })
     }
 
-
     render() {
         return (
             <div>
