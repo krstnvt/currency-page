@@ -6,9 +6,12 @@ Kristina Safonova
 # Overview
 
 • Currency changes are imported using API service - https://anyapi.io/
+
 • Data are be stored in SQL based database
+
 • Data are refreshed with the most recent EUR to GBP, USD, AUD exchange
 rates on daily basis
+
 • Front-end interface allows user to select target currency and output it
 
 
