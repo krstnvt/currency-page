@@ -8,8 +8,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RequestCurrencyService
 {
-    private $httpClient;
-    private $entityManager;
+    private HttpClientInterface $httpClient;
+    private EntityManagerInterface $entityManager;
     public const ALLOWED_RATES = [
         'USD',
         'GBP',
@@ -36,6 +36,7 @@ class RequestCurrencyService
                 $currencyExchange->setBaseCurrency($responseData['base']);
                 $currencyExchange->setTargetCurrency($targetCurrency);
                 $currencyExchange->setRate($rate);
+                //var_dump($currencyExchange);
 
                 $updatedAt = new \DateTime('@' . $responseData['lastUpdate']);
                 $updatedAt->format('Y-m-d');

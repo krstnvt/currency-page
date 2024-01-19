@@ -5,6 +5,7 @@ import {CurrencyTable} from "./CurrencyTable";
 import '../styles/main.css';
 
 export class Main extends React.Component<{}, {currencies: CurrencyExchange[]}> {
+    private interval: NodeJS.Timeout | undefined;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -13,10 +14,21 @@ export class Main extends React.Component<{}, {currencies: CurrencyExchange[]}> 
     }
 
     componentDidMount() {
-        axios.get('https://localhost:8000/api/currencies')
+        this.getCurrencies();
+        this.interval = setInterval(() => {
+            this.getCurrencies();
+        },24 * 60 * 60 * 1000);
+    }
+
+    private getCurrencies() {
+        axios.get('http://localhost:8000/api/currencies')
             .then(res => {
                 this.setState({currencies: res.data})
             })
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     render() {
@@ -26,5 +38,4 @@ export class Main extends React.Component<{}, {currencies: CurrencyExchange[]}> 
             </div>
         )
     }
-
 }

@@ -21,25 +21,6 @@ class CurrencyExchangeRepository extends ServiceEntityRepository
         parent::__construct($registry, CurrencyExchange::class);
     }
 
-    public function findByTargetCurrency($targetCurrency): array
-    {
-        return $this->createQueryBuilder('currency')
-            ->andWhere('currency.target_currency = :targetCurrency')
-            ->setParameter('targetCurrency', $targetCurrency)
-            ->orderBy('currency.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getAllTargetCurrencies(): array
-    {
-        return $this->createQueryBuilder('currency')
-            ->select('DISTINCT currency.target_currency')
-            ->orderBy('currency.target_currency', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
     public function getAllCurrencyRateData(): array
     {
         return $this->createQueryBuilder('currency')
@@ -56,4 +37,3 @@ class CurrencyExchangeRepository extends ServiceEntityRepository
             ->getResult();
     }
 }
-

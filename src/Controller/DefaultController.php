@@ -30,10 +30,8 @@ class DefaultController extends AbstractController
         $currencies = $this->currencyService->getAllCurrencyRateData();
 
         $response = new Response();
-
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
-
         $response->setContent(json_encode($currencies));
 
         return $response;

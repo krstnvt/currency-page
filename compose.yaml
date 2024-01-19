@@ -1,12 +1,24 @@
 version: '3'
 
 services:
+  ofelia:
+    image: mcuadros/ofelia:latest
+    depends_on:
+      - symfony
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   symfony:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - 8000:8000
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.currencyrefresh.schedule: "0 0 * * *"
+      ofelia.job-exec.currencyrefresh.command: "symfony console app:request-exchange-currency-data"
 
   database:
     image: mariadb:latest

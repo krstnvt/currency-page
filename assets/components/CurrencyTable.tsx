@@ -1,9 +1,9 @@
 import React from 'react';
-import {CurrencyExchange} from '../entities/CurrencyExchange';
 import moment from 'moment';
-import SelectCurrency from "./SelectCurrency";
-import CurrencyTableRows from "./CurrencyTableRows";
-import Pagination from "./Pagination";
+import {CurrencyExchange} from '../entities/CurrencyExchange';
+import {SelectCurrency} from "./SelectCurrency";
+import {CurrencyTableRows} from "./CurrencyTableRows";
+import {CurrencyTablePagination} from "./CurrencyTablePagination";
 
 export class CurrencyTable extends React.Component<
     { currencies: CurrencyExchange[] },
@@ -57,7 +57,7 @@ export class CurrencyTable extends React.Component<
                     <CurrencyTableRows currentItems={currentItems}/>
                 </table>
 
-                <Pagination
+                <CurrencyTablePagination
                     pageNumbers={pageNumbers}
                     currentPage={currentPage}
                     onClick={(number) => this.setState({currentPage: number})}/>
@@ -72,3 +72,4 @@ export class CurrencyTable extends React.Component<
         );
     }
 }
+

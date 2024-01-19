@@ -2,19 +2,24 @@ import React from 'react';
 import moment, {Moment} from 'moment';
 import {CurrencyExchange} from "../entities/CurrencyExchange";
 
-interface CurrencyTableRowsProps {
-    currentItems: CurrencyExchange[];
+export class CurrencyTableRows extends React.Component<
+    { currentItems: CurrencyExchange[] },
+    {}
+> {
+    constructor(props: any) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <tbody>
+            {this.props.currentItems.map((currency) => (
+                <tr key={currency.id}>
+                    <td>{moment(Object.values(currency.updated_at)[0]).format('Y-MM-DD')}</td>
+                    <td>{currency.rate}</td>
+                </tr>
+            ))}
+            </tbody>
+        );
+    }
 }
-
-const CurrencyTableRows: React.FC<CurrencyTableRowsProps> = ({currentItems}) => (
-    <tbody>
-    {currentItems.map((currency) => (
-        <tr key={currency.id}>
-            <td>{moment(Object.values(currency.updated_at)[0]).format('Y-MM-DD')}</td>
-            <td>{currency.rate}</td>
-        </tr>
-    ))}
-    </tbody>
-);
-
-export default CurrencyTableRows;
