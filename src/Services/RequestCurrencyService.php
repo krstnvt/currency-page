@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Integrations;
+namespace App\Services;
 
 use App\Entity\CurrencyExchange;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +36,6 @@ class RequestCurrencyService
                 $currencyExchange->setBaseCurrency($responseData['base']);
                 $currencyExchange->setTargetCurrency($targetCurrency);
                 $currencyExchange->setRate($rate);
-                //var_dump($currencyExchange);
 
                 $updatedAt = new \DateTime('@' . $responseData['lastUpdate']);
                 $updatedAt->format('Y-m-d');

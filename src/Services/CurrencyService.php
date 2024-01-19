@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Integrations;
+namespace App\Services;
 
 use App\Repository\CurrencyExchangeRepository;
 
