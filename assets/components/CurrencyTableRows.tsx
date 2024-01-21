@@ -16,7 +16,7 @@ export class CurrencyTableRows extends React.Component<
             {this.props.currentItems.map((currency) => (
                 <tr key={currency.id}>
                     <td>{moment(Object.values(currency.updated_at)[0]).format('Y-MM-DD')}</td>
-                    <td>{currency.rate}</td>
+                    <td>{currency.rate.toFixed(4)}</td>
                 </tr>
             ))}
             </tbody>
