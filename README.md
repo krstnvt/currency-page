@@ -10,7 +10,7 @@ Create a PHP back-end service that captures historical currency exchange rates o
 
 • Currency changes are imported using API service - https://anyapi.io/
 
-• Data are be stored in SQL based database
+• Data are stored in SQL based database
 
 • Data are refreshed with the most recent EUR to GBP, USD, AUD exchange
 rates on daily basis
