@@ -30,12 +30,17 @@ rates on daily basis
 **Other:** Github, Docker
 
 
+## Prerequisites
+
+docker, docker-compose
+
+
 ## Setting up
 
 1. Clone git repository - https://github.com/krstnvt/currency-page.git
 2. Build and run docker project using _'docker-compose up -d --build'_ command
-3. Run initial migration using _'docker exec **XX** symfony console doctrine:migrations:migrate'_, where **'XX'** is the first 2 signs of the symfony container
-4. If needed, run _'docker exec **XX** symfony console app:request-exchange-currency-data'_ to manually run the command to obtain currency rates (this command is called automatically every day at midnight)
+3. To start migration you need to run _'symfony console doctrine:migrations:migrate'_ command (e.g. to run migrations in the container, run _'docker exec [container id/name] symfony console doctrine:migrations:migrate'_)
+5. To get the currency exchange data manually, you need to run _'symfony console app:request-exchange-currency-data'_ command (e.g. to run this command in the container, run _'docker exec [container id/name] symfony console app:request-exchange-currency-data'_ (this command is called automatically every day at midnight)
 
 
 ## Testing
@@ -43,5 +48,11 @@ rates on daily basis
 To start tests, you need to run a 'php bin/phpunit **TestClass**' command, where **TestClass** is path to your test class
 
 
-## Contacts
+## Things to consider
+**Local Web Server Symfony**
 
+In my project I use Symfony Local Web Server, which is not allowed for use in a production environment, but for a home project Symfony Local Web Server will be enough. However, for a real project it would be appropriate to configure nginx in docker, which will solve the problem with using Symfony Local Web Server.
+
+**Exchange Data**
+
+Since the command for receiving currency exchange from the API is automatically launched only once a day, when raising the project, you could manually run the command to obtain the data, otherwise there will be no data on the front-end
