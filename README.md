@@ -5,6 +5,9 @@ Kristina Safonova
 
 # Overview
 
+**Assignment**:
+Create a PHP back-end service that captures historical currency exchange rates on a daily basis and presents them in a front-end interface.
+
 • Currency changes are imported using API service - https://anyapi.io/
 
 • Data are be stored in SQL based database
@@ -17,13 +20,12 @@ rates on daily basis
 
 ## Tech stack and environment
 
-**Laptop:** MSI GF63 Thin 11UD
 
 **IDE:** PhpStorm 2023.1
 
 **Back-end:** PHP 8.1, Symfony 6.2
 
-**Front-end:** React, TypeScript 5.3.3, Twig
+**Front-end:** React, TypeScript 5.3.3
 
 **Other:** Github, Docker
 
@@ -31,10 +33,9 @@ rates on daily basis
 ## Setting up
 
 1. Clone git repository - https://github.com/krstnvt/currency-page.git
-2. Build docker containers using _'docker-compose build'_ command
-3. Bring up docker project using _'docker-compose up -d'_ command
-4. Run initial migration using _'docker exec **XX** symfony console doctrine:migrations:migrate'_, where **'XX'** is the first 2 signs of the symfony container
-5. If needed, run _'docker exec **XX** symfony console app:request-exchange-currency-data'_ to manually run the command to obtain currency rates (this command is called automatically every day at midnight)
+2. Build and run docker project using _'docker-compose up -d --build'_ command
+3. Run initial migration using _'docker exec **XX** symfony console doctrine:migrations:migrate'_, where **'XX'** is the first 2 signs of the symfony container
+4. If needed, run _'docker exec **XX** symfony console app:request-exchange-currency-data'_ to manually run the command to obtain currency rates (this command is called automatically every day at midnight)
 
 
 ## Testing
