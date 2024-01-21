@@ -53,6 +53,13 @@ To start tests, you need to run a 'php bin/phpunit **TestClass**' command, where
 
 In my project I use Symfony Local Web Server, which is not allowed for use in a production environment, but for a home project Symfony Local Web Server will be enough. However, for a real project it would be appropriate to configure nginx in docker, which will solve the problem with using Symfony Local Web Server.
 
+**Ofelia**
+
+I used Ofelia to set up periodic tasks in my project for several reasons:
+- Ofelia is easy to configure and allows you to quickly set up a schedule for setting tasks
+- Ofelia is designed for integration with docker, and can easily interact with tasks in containers
+All this makes Ofelia the perfect solution to solve my problem with setting a schedule to run a command to receive currency exchange.
+
 **Exchange Data**
 
 Since the command for receiving currency exchange from the API is automatically launched only once a day, when raising the project, you could manually run the command to obtain the data, otherwise there will be no data on the front-end
